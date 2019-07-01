@@ -19,7 +19,7 @@ NS ?= nvgl
 DOCKER_USERNAME ?= nvgl+travis
 DOCKER_REGISTRY ?= quay.io
 IMAGE_BUILD=$(APP):$(RELEASE)-$(COMMIT)
-IMAGE_RELEASE=$(DOCKER_REGISTRY)/$(NS)/$(NAME):$(RELEASE)
+IMAGE_RELEASE=$(DOCKER_REGISTRY)/$(NS)/$(APP):$(RELEASE)
 
 proto: $(PROTOCGENGO) helloworld/helloworld.proto ### lenerate a go file from protocol buffers
 	protoc -I helloworld/ helloworld/helloworld.proto --go_out=plugins=grpc:helloworld
@@ -84,4 +84,5 @@ help: ## Help
 	@echo "Platforms are $(PLATFORMS)"
 	@echo "GOMETALINTER is $(GOMETALINTER)"
 	@echo "IMAGE_BUILD is ${IMAGE_BUILD}"
+	echo  "IMAGE_RELEASE is ${IMAGE_RELEASE}"
 	@echo '--------------------------------------------------------------------------'
