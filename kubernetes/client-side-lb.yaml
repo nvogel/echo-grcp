@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: grpc-client
+  name: grpc-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: grpc-client
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: grpc-client
+    spec:
+      serviceAccountName: pod-reader-sa
+      containers:
+        - args: ["/client"]
+          env:
+          - name: SERVER
+            value: grpc-server:50051
+          image: echogrpc:0.0.1
+          name: grpc-client

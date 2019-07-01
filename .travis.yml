@@ -1,0 +1,23 @@
+language: go
+go:
+  - '1.10'
+sudo: required
+services:
+- docker
+script:
+- make build
+deploy:
+- provider: script
+  script: make push
+  skip_cleanup: true
+  on:
+    tags: true
+- provider: script
+  script: DOCKER_PASSWORD="$DOCKER_HUB_PASSWORD" DOCKER_USERNAME=nvogel DOCKER_REGISTRY=registry.hub.docker.com NS=nvogel make push
+  skip_cleanup: true
+  on:
+    tags: true
+env:
+  global:
+  - secure: QgX8P3Bnldb451FjFR2UhUtDNi8a0qFgjtcvH0lp1QK0lU6LLAMx9ZZ8nqzBnwzBYLo/EzqYcYaX6pcpMLI5MRAk6g10iOfXRfW4LOVaWkgyKddaKvY9kKmQvyPCCsIddtsqSa+5cKdQvf3j+AGD7Hqxa109haczteAxZBGlgLGLnxl1QmirCUztahhLAsYIsJu9RnNvUcs6Z8ZEU1SkRZ34H/SiBA3uWroX9v/2ESPrU9BOdBbDr2eUZLEleXF+dbGPpmMJTOHNh+UecMw1b2+3CMAQfeL2ESCg9P2ZXu5QoO3xa13Z2bKmKgIpGxPI7LrN5UQEzYk3AqBcUAVzTeTvzL3KE/xiTMKkWByaGEqUfOr7kTfanTU0hgmTQlZinJTdE8C10iUN7FFHbieTb7pYY/HZGHgrXoT3OawSJBasavUjsBMjz6qe1qYbAjCTP1rzoYtMe3Z0GSk2nh6P+NEpcxvdi3tsEYEO1d07dqOWNhly+Kv2uarQAazKNzErau77w7FChG5Udude+Y3f6QGc+poSMn6dPAf5bLPGX/ZJqMjaNxpY/aVQ6M8zl1wcZ6SUVJRtHe5l30SSkDo/X/f34nDNs3ZqN5/VclaufmN+Pk59uZESba1WO8iD9Z74bDqvg6kT0A78K7Ghn0f0d2z0yxtn2xMwzT1JUFIFFJ0=
+  - secure: ilC+yIRg7o8jxaCKsSukCXfb1WQnSSSJZVZLzP8khHlFMh0112tOIXjCp//CU5DKR2MFYmIcx4Lq3fXPaIwyEsR1OVq5/C/0qDrP+G3So3vQvrT4acIN0QY9MO8op3kDFl0sLbcWzpCR8arus5LccR6h5zPbo//banPzOpF8K/wH4G+E3mtaNsJZfdTKYW3piB34NUGa41YNpVDTteWETkJ/F3A09lV/YwZZJ3YnePdCcxIPcM5oH0ZOfdW3KwR6Y4XAMfJaKTw28k8j3TBVoCRrPEdrUkwu67cLdBU2PwKxe/4KuY8a4fN3/SVgTeVQmSa063oqo0PkWztCXWFqnXvHbD6n3Ndz4vhGMguouJfavWd4HarNsmN0wl3UD5nAnmnQdjCa26393lM3x7FdiT16pT2wBIV5VMBSnYugD1ouS9cKmomTq6rqtRxNG34ypF8/XanPidQT/eB+kuY8miH8e9OnNqe2NrjFdQ/g+vPfIp0+hPeAFAIxK3fDmq30Ma/3gDHVt+UZHjUTgpDecWq6DQ3tCYj0/4KtRT6gsAXN5CoqoxPwZiFzRjpwwcAwSgiKTbMxGOeEFaCilkOkJCueNt0rJjqMIcYZ40Tlw2jWxaT21Q9x3MEyGglG60AQvb+EzzR/URF6OqUSyoiZKBA0NE+N4VHdGW7/B/qYP/s=

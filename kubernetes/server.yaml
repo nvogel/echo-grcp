@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: grpc-server
+  name: grpc-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: grpc-server
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: grpc-server
+    spec:
+      containers:
+          - image: echogrpc:0.0.1
+        name: grpc-server

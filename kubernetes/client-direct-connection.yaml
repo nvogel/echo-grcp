@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: grpc-client-direct
+  name: grpc-client-direct
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: grpc-client-direct
+  template:
+    metadata:
+      labels:
+        run: grpc-client-direct
+    spec:
+      containers:
+        - args: ["/client"]
+          env:
+          - name: SERVER
+            value: grpc-server:50051
+          - name: MODE
+            value: direct
+          image: echogrpc:0.0.5
+          name: grpc-client-direct
