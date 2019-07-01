@@ -47,7 +47,7 @@ dep: ### init dependencies
 	dep ensure --vendor-only
 
 .PHONY: build
-build-images: ### Build docker image
+build: ### Build docker image
         docker build -t ${IMAGE_BUILD} .
 
 .PHONY: push
