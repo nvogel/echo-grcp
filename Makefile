@@ -48,7 +48,8 @@ dep: ### init dependencies
 
 .PHONY: build
 build: ### Build docker image
-        docker build -t ${IMAGE_BUILD} .
+	@echo "Build ${IMAGE_BUILD}"
+	docker build -t ${IMAGE_BUILD} .
 
 .PHONY: push
 push: ### Push image to registry
@@ -82,4 +83,5 @@ help: ## Help
 	@echo "---"
 	@echo "Platforms are $(PLATFORMS)"
 	@echo "GOMETALINTER is $(GOMETALINTER)"
+	@echo "IMAGE_BUILD is ${IMAGE_BUILD}"
 	@echo '--------------------------------------------------------------------------'

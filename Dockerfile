@@ -16,7 +16,7 @@ RUN make linux
 
 FROM centos:7.6.1810
 
-COPY --from=builder /app/echo-grpc-server* /server
-COPY --from=builder /app/echo-grpc-server* /client
+COPY --from=builder /app/echogrpc-client* /server
+COPY --from=builder /app/echogrpc-client* /client
 RUN chmod +x client && chmod +x server
 CMD ["/server"]
