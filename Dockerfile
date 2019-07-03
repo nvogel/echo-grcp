@@ -12,10 +12,21 @@ RUN apt-get update -y && \
     go get -u -v github.com/golang/protobuf/protoc-gen-go \
     github.com/golang/dep/cmd/dep;
 
+# Create appuser
+RUN adduser --system --disabled-login appuser
+
 RUN make linux
 
 FROM scratch
 
-COPY --from=builder /app/echogrpc-client* /server
+# Copy our static executable
+COPY --from=builder /app/echogrpc-server* /server
 COPY --from=builder /app/echogrpc-client* /client
+
+# Copy /etc/passwd so the user will list with his name instead of an Id
+COPY --from=builder /etc/passwd /etc/passwd
+
+# Use an unprivileged user.
+USER appuser
+
 ENTRYPOINT ["/server"]
