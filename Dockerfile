@@ -13,7 +13,7 @@ RUN apt-get update -y && \
     github.com/golang/dep/cmd/dep;
 
 # Create appuser
-RUN adduser --system --disabled-login appuser
+RUN useradd -U appuser
 
 RUN make linux
 
