@@ -14,8 +14,8 @@ RUN apt-get update -y && \
 
 RUN make linux
 
-FROM centos:7.6.1810
+FROM scratch
 
 COPY --from=builder /app/echogrpc-client* /server
 COPY --from=builder /app/echogrpc-client* /client
-CMD ["/server"]
+ENTRYPOINT ["/server"]

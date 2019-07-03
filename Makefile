@@ -30,17 +30,19 @@ release: $(PLATFORMS) ### Release
 .PHONY: $(PLATFORMS)
 $(PLATFORMS): proto dep ### Build per platform
 	mkdir -p ${RELEASE_DIR}
-	GOOS=$(os) GOARCH=amd64 go build \
+	CGO_ENABLED=0 GOOS=$(os) GOARCH=amd64 go build \
 		-ldflags "-s -w \
 		-X ${PROJECT}/version.Release=${RELEASE} \
 		-X ${PROJECT}/version.Commit=${COMMIT} \
 		-X ${PROJECT}/version.BuildTime=${BUILD_TIME}" \
+		-a -installsuffix cgo \
 		-o ${RELEASE_DIR}/${APP}-server-$(RELEASE)-$(os)-amd64 ./server
-	GOOS=$(os) GOARCH=amd64 go build \
+	CGO_ENABLED=0 GOOS=$(os) GOARCH=amd64 go build \
 		-ldflags "-s -w \
 		-X ${PROJECT}/version.Release=${RELEASE} \
 		-X ${PROJECT}/version.Commit=${COMMIT} \
 		-X ${PROJECT}/version.BuildTime=${BUILD_TIME}" \
+		-a -installsuffix cgo \
 		-o ${RELEASE_DIR}/${APP}-client-$(RELEASE)-$(os)-amd64 ./client
 .PHONY: dep
 dep: ### init dependencies
