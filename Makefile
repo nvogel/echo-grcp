@@ -27,26 +27,30 @@ proto: $(PROTOCGENGO) helloworld/helloworld.proto ### lenerate a go file from pr
 .PHONY: release
 release: $(PLATFORMS) ### Release
 
+# Because of CGO_ENABLED=0 :
+#   the executable will not depend on the system C libraries and will instead
+#   embed everything that is needed to run; only statically linked binaries can
+#   run in a scratch container.
 .PHONY: $(PLATFORMS)
 $(PLATFORMS): proto dep ### Build per platform
 	mkdir -p ${RELEASE_DIR}
-	CGO_ENABLED=0 GOOS=$(os) GOARCH=amd64 go build \
+	GO111MODULE=on CGO_ENABLED=0 GOOS=$(os) GOARCH=amd64 go build \
 		-ldflags "-s -w \
 		-X ${PROJECT}/version.Release=${RELEASE} \
 		-X ${PROJECT}/version.Commit=${COMMIT} \
 		-X ${PROJECT}/version.BuildTime=${BUILD_TIME}" \
-		-a -installsuffix cgo \
+		-installsuffix 'static' \
 		-o ${RELEASE_DIR}/${APP}-server-$(RELEASE)-$(os)-amd64 ./server
-	CGO_ENABLED=0 GOOS=$(os) GOARCH=amd64 go build \
+	GO111MODULE=on CGO_ENABLED=0 GOOS=$(os) GOARCH=amd64 go build \
 		-ldflags "-s -w \
 		-X ${PROJECT}/version.Release=${RELEASE} \
 		-X ${PROJECT}/version.Commit=${COMMIT} \
 		-X ${PROJECT}/version.BuildTime=${BUILD_TIME}" \
-		-a -installsuffix cgo \
+		-installsuffix 'static' \
 		-o ${RELEASE_DIR}/${APP}-client-$(RELEASE)-$(os)-amd64 ./client
 .PHONY: dep
 dep: ### init dependencies
-	dep ensure --vendor-only
+	GO111MODULE=on go mod download
 
 .PHONY: build
 build: ### Build docker image
