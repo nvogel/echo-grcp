@@ -24,9 +24,6 @@ FROM scratch
 COPY --from=builder /app/echogrpc-server* /server
 COPY --from=builder /app/echogrpc-client* /client
 
-# Copy /etc/passwd so the user will list with his name instead of an Id
-COPY --from=builder /etc/passwd /etc/passwd
-
 # Use an unprivileged user.
 USER appuser
 
