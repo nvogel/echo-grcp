@@ -14,7 +14,7 @@ RUN apt-get update -y && \
 
 # Create the user and group that will be used in the running container to
 # run the process as an unprivileged user.
-RUN useradd -U appuser
+RUN useradd -u 10001 appuser
 
 RUN make linux
 
@@ -25,6 +25,6 @@ COPY --from=builder /app/echogrpc-server* /server
 COPY --from=builder /app/echogrpc-client* /client
 
 # Use an unprivileged user.
-USER appuser
+USER 10001
 
 ENTRYPOINT ["/server"]
